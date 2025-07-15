@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultimate Prompt Generator - Enhanced</title>
+  <style>
+    body { background: #121212; color: #eee; font-family: 'Segoe UI', sans-serif; padding: 2rem; }
+    h1, h2 { color: #f2994a; }
+    .section { margin-bottom: 1rem; border: 1px solid #444; border-radius: 8px; overflow: hidden; }
+    .section summary { background: #1e1e1e; padding: 1rem; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+    .section-content { padding: 1rem; background: #222; }
+    select, textarea, button, input[type=checkbox] {
+      width: 100%; margin-top: 0.5rem; padding: 0.5rem;
+      background: #1e1e1e; color: #fff; border: 1px solid #444; font-size: 1rem;
+    }
+    textarea { height: 200px; margin-top: 1rem; }
+    label.toggle { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+    .row-buttons button { width: auto; margin-right: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Ultimate Prompt Generator</h1>
+  <p>Select your options below. Prompt updates in real-time and can be saved or copied.</p>
+
+  <details class="section" open>
+    <summary>Hair</summary>
+    <div class="section-content">
+      <label for="hairColor">Hair Color:</label>
+      <select id="hairColor">
+        <option>blonde</option><option>black</option><option>brunette</option><option>red</option>
+        <option>silver</option><option>pastel pink</option><option>blue</option><option>auburn</option>
+        <option>platinum</option><option>white</option>
+      </select>
+      <label for="hairStyle">Hair Style:</label>
+      <select id="hairStyle">
+        <option>long and wavy</option><option>curly bob</option><option>shoulder-length layers</option>
+        <option>tight curls</option><option>braided ponytail</option><option>messy updo</option>
+        <option>sleek straight</option><option>pixie cut</option><option>high bun</option><option>wet look</option>
+      </select>
+    </div>
+  </details>
+
+  <details class="section">
+    <summary>Skin & Body</summary>
+    <div class="section-content">
+      <label for="skinTone">Skin Tone:</label>
+      <select id="skinTone">
+        <option>pale</option><option>fair</option><option>light tan</option><option>olive</option>
+        <option>bronze</option><option>brown</option><option>dark chocolate</option>
+      </select>
+      <label for="bodyType">Body Type:</label>
+      <select id="bodyType">
+        <option>petite and slender</option><option>petite and toned</option><option>petite with soft curves</option>
+        <option>athletically petite</option><option>petite and narrow-waisted</option>
+      </select>
+    </div>
+  </details>
+
+  <details class="section">
+    <summary>Clothing & Shoes</summary>
+    <div class="section-content">
+      <label for="lingerieStyle">Lingerie Style:</label>
+      <select id="lingerieStyle">
+        <option>lace bra and thong</option><option>mesh teddy</option><option>corset and garters</option>
+        <option>lace bodysuit</option><option>sheer nightgown</option><option>silk camisole</option>
+        <option>fishnet set</option><option>lace bralette and shorts</option><option>strapless corset</option>
+      </select>
+      <label for="heelsStyle">High Heels:</label>
+      <select id="heelsStyle">
+        <option>stiletto heels</option><option>platform heels</option><option>ankle strap heels</option>
+        <option>lace-up heels</option><option>peep-toe heels</option><option>strappy sandals</option>
+        <option>clear heels</option><option>knee-high boots</option><option>slingback heels</option>
+      </select>
+    </div>
+  </details>
+
+  <details class="section">
+    <summary>Scene & Style</summary>
+    <div class="section-content">
+      <label for="theme">Theme/Mood:</label>
+      <select id="theme">
+        <option>romantic</option><option>seductive</option><option>mysterious</option>
+        <option>dominant</option><option>innocent</option><option>playful</option>
+        <option>dreamlike</option><option>gothic</option><option>angelic</option><option>decadent</option>
+      </select>
+      <label for="setting">Setting:</label>
+      <select id="setting">
+        <option>dim bedroom</option><option>gothic cathedral</option><option>misty forest</option>
+        <option>luxury suite</option><option>abandoned warehouse</option><option>steamy bathhouse</option>
+      </select>
+      <label for="pose">Pose:</label>
+      <select id="pose">
+        <option>arched back</option><option>leaning on wall</option><option>lying on bed</option>
+        <option>kneeling provocatively</option><option>standing with hip out</option><option>legs crossed, seated</option>
+      </select>
+      <label for="lighting">Lighting:</label>
+      <select id="lighting">
+        <option>soft glow</option><option>dim candlelight</option><option>backlit</option>
+        <option>spotlight focus</option><option>cool moonlight</option><option>warm ambient</option>
+      </select>
+    </div>
+  </details>
+
+  <label class="toggle"><input type="checkbox" id="nsfwToggle" /> NSFW Mode</label>
+  <label class="toggle"><input type="checkbox" id="adjectiveToggle" /> Add More Adjectives</label>
+  <div class="row-buttons">
+    <button onclick="generateFullPrompt()">Generate Prompt</button>
+    <button onclick="copyPrompt()">Copy</button>
+    <button onclick="downloadPrompt()">Download</button>
+  </div>
+  <textarea id="output" placeholder="Full prompt appears here..."></textarea>
+
+  <script>
+    function get(val) { return document.getElementById(val).value; }
+    function enhance(str) {
+      return str.replace("woman", "stunning young woman")
+                .replace("posed", "seductively posed")
+                .replace("lit", "bathed")
+                .replace("wears", "dressed in an exquisite");
+    }
+
+    function generateFullPrompt() {
+      const color = get("hairColor"), style = get("hairStyle"), tone = get("skinTone");
+      const body = get("bodyType"), lingerie = get("lingerieStyle"), heels = get("heelsStyle");
+      const theme = get("theme"), setting = get("setting"), pose = get("pose"), light = get("lighting");
+      const nsfw = document.getElementById("nsfwToggle").checked;
+      const adjectives = document.getElementById("adjectiveToggle").checked;
+
+      let prompt = `A young, attractive, petite woman with ${tone} skin and a ${body} build. She has ${color} hair styled in a ${style}, ${pose} in a ${setting} lit with ${light}.`;
+
+      if (nsfw) {
+        prompt += ` She's dressed in a revealing ${lingerie}, matched with ${heels}. The scene is provocative and radiates a ${theme} atmosphere.`;
+      } else {
+        prompt += ` She wears a fashionable ${lingerie} with matching ${heels}, and the image conveys a ${theme} tone.`;
+      }
+
+      if (adjectives) prompt = enhance(prompt);
+      document.getElementById("output").value = prompt;
+      localStorage.setItem("savedPrompt", prompt);
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById("output");
+      text.select(); document.execCommand("copy");
+    }
+
+    function downloadPrompt() {
+      const blob = new Blob([document.getElementById("output").value], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "generated_prompt.txt";
+      link.click();
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem("savedPrompt");
+      if (saved) document.getElementById("output").value = saved;
+    };
+  </script>
+
+<!-- Added inside <body> of existing HTML -->
+<details class="section">
+  <summary>Celebrity Likeness</summary>
+  <div class="section-content">
+    <label for="celebrity">Celebrity Inspiration:</label>
+    <select id="celebrity">
+      <option>Scarlett Johansson</option><option>Emma Stone</option><option>Zendaya</option>
+      <option>Gal Gadot</option><option>Aubrey Plaza</option><option>Megan Fox</option>
+      <option>Florence Pugh</option><option>Anna Kendrick</option><option>Jenna Ortega</option>
+      <option>Sydney Sweeney</option>
+    </select>
+  </div>
+</details>
+
+<details class="section">
+  <summary>Camera Angle</summary>
+  <div class="section-content">
+    <label for="angle">Camera Angle:</label>
+    <select id="angle">
+      <option>low angle (from below)</option><option>eye level</option><option>high angle (looking down)</option>
+      <option>over the shoulder</option><option>close-up</option><option>wide shot</option>
+      <option>profile side view</option><option>rear view</option><option>worm's eye view</option>
+      <option>POV</option>
+    </select>
+  </div>
+</details>
+
+<details class="section">
+  <summary>Preset Templates</summary>
+  <div class="section-content">
+    <label for="template">Quick Select Presets:</label>
+    <select id="template" onchange="applyPreset()">
+      <option value="">-- Choose Preset --</option>
+      <option value="romanticLace">Romantic in Lace</option>
+      <option value="dominantDark">Dominant & Dark</option>
+      <option value="innocentDreamy">Innocent & Dreamy</option>
+    </select>
+  </div>
+</details>
+
+<script>
+function applyPreset() {
+  const preset = document.getElementById("template").value;
+  if (preset === "romanticLace") {
+    setVals("hairColor","auburn"); setVals("hairStyle","long and wavy");
+    setVals("skinTone","fair"); setVals("bodyType","petite and soft curves");
+    setVals("lingerieStyle","lace bra and thong"); setVals("heelsStyle","strappy sandals");
+    setVals("theme","romantic"); setVals("setting","dim bedroom");
+    setVals("pose","lying on bed"); setVals("lighting","soft glow");
+    setVals("celebrity","Emma Stone"); setVals("angle","low angle (from below)");
+  }
+  else if (preset === "dominantDark") {
+    setVals("hairColor","black"); setVals("hairStyle","sleek straight");
+    setVals("skinTone","olive"); setVals("bodyType","athletically petite");
+    setVals("lingerieStyle","corset and garters"); setVals("heelsStyle","knee-high boots");
+    setVals("theme","dominant"); setVals("setting","gothic cathedral");
+    setVals("pose","arched back"); setVals("lighting","spotlight focus");
+    setVals("celebrity","Gal Gadot"); setVals("angle","worm's eye view");
+  }
+  else if (preset === "innocentDreamy") {
+    setVals("hairColor","blonde"); setVals("hairStyle","braided ponytail");
+    setVals("skinTone","light tan"); setVals("bodyType","petite and slender");
+    setVals("lingerieStyle","silk camisole"); setVals("heelsStyle","ankle strap heels");
+    setVals("theme","dreamlike"); setVals("setting","misty forest");
+    setVals("pose","standing with hip out"); setVals("lighting","cool moonlight");
+    setVals("celebrity","Florence Pugh"); setVals("angle","eye level");
+  }
+  generateFullPrompt();
+}
+
+function setVals(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.value = value;
+}
+</script>
+</body>
+</html>
